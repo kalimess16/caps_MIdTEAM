@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         progressDialog = new ProgressDialog(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-         mAuth = FirebaseAuth.getInstance();
-         Anhxa();
+        mAuth = FirebaseAuth.getInstance();
+        Anhxa();
         btnDangKi.setOnClickListener(this);
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +107,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     && validate.validateConfirmPassword(password,cfpassword,textInputConfirmPassword)){
                 Dangki();
                 DangkiRealtime(email,password,cfpassword);
-
                 return;
+            }
+            if(validate.validatePassword(password,textInputPassword)){
+                Dangki();
+                DangkiRealtime(email,password,cfpassword);
+                return;
+
+            }
+            if(validate.validateConfirmPassword(password,cfpassword,textInputConfirmPassword)){
+                Dangki();
+                DangkiRealtime(email,password,cfpassword);
+                return;
+
             }
 //            String input = "FullName: " + textInputNAME.getEditText().getText().toString();
 //            input += "\n";

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nguye.capston1_dtu.R;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -51,8 +52,8 @@ public class MainActivity_Chinh extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.search_edit_frame, page).commit();
 
         /**
-         * thắng-sơn code - tạm ẩn*/
-      /*  userLogout = findViewById(R.id.btnLogout);
+         * sơn code - tạm ẩn*/
+        userLogout = findViewById(R.id.btnLogout);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         //setContentView(R.layout.nav_header_main_activity__chinh);
@@ -67,7 +68,6 @@ public class MainActivity_Chinh extends AppCompatActivity
         Log.e("Image", firebaseUser.getPhotoUrl() + "");
         if(firebaseUser.getPhotoUrl() != null)
             Picasso.get().load(firebaseUser.getPhotoUrl().toString()).into(bmImage);
-*/
 
     }
 
@@ -125,6 +125,9 @@ public class MainActivity_Chinh extends AppCompatActivity
             fragment = new thongtintk();
 
         } else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+            startActivity(new Intent(this, LoginActivity.class));
 
         }
 
