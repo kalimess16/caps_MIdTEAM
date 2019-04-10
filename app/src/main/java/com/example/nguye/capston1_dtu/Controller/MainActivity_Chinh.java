@@ -53,7 +53,6 @@ public class MainActivity_Chinh extends AppCompatActivity
 
         /**
          * sơn code - tạm ẩn*/
-        userLogout = findViewById(R.id.btnLogout);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         //setContentView(R.layout.nav_header_main_activity__chinh);
@@ -122,7 +121,7 @@ public class MainActivity_Chinh extends AppCompatActivity
         } else if (id == R.id.nav_tu_van) {
             fragment = new TuVan();
         } else if (id == R.id.nav_share) {
-            fragment = new thongtintk();
+            startActivity(new Intent(this, Share.class));
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
