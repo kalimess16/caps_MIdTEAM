@@ -7,23 +7,23 @@
         <item
             android:id="@+id/nav_homePage"
             android:icon="@drawable/ic_action_home"
-            android:title="Trang Chu" />
+            android:title="TRANG CHỦ" />
         <item
             android:id="@+id/nav_cong_thuc"
             android:icon="@drawable/ic_action_viewcongthuc"
-            android:title="Cong Thuc" />
+            android:title="CÔNG THỨC" />
         <item
             android:id="@+id/nav_bai_hoc"
             android:icon="@drawable/ic_action_baihoc"
-            android:title="Bai Hoc" />
+            android:title="BÀI HỌC" />
         <item
             android:id="@+id/nav_test"
             android:icon="@drawable/ic_action_test"
-            android:title="Test" />
+            android:title="BÀI KIỂM TRA" />
         <item
             android:id="@+id/nav_tu_van"
             android:icon="@drawable/ic_action_tuvan"
-            android:title="Tu Vấn Sinh Viên"
+            android:title="TƯ VẤN"
         />
     </group>
 
@@ -32,11 +32,11 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="CHIA SẼ" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@mipmap/ic_laucher_dangxuat"
-                android:title="Đăng xuất"/>
+                android:title="ĐĂNG XUẤT"/>
 
         </menu>
     </item>

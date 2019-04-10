@@ -63,7 +63,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView btnForgot,btnDangKy;
+    private TextView textViewDK,btnForgot,btnDangKy;
     private Button btnDangNhapbutton,btnFB;
     private LoginButton loginButton;
     private SignInButton btnGoogleButton;
@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseDatabase mFirebase;
     private TextInputLayout textInputEmail,textInputPassword;
     private GoogleSignInClient mGoogle;
-//    private static MainActivity mainActivity;
-//    private static final String TAG = "FacebookLogin";
+    private static MainActivity mainActivity;
+    private static final String TAG = "FacebookLogin";
     private CallbackManager callbackManager;
     private FacebookCallback<LoginResult> loginResult;
 
@@ -89,13 +89,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog = new ProgressDialog(this);
         mDatabase = FirebaseDatabase.getInstance().getReference("Users");
         Anhxa();
-        ConfigureGGsignin(); /// 1
+        ConfigureGGsignin();
         btnGoogleButton.setOnClickListener(this);
         btnDangNhapbutton.setOnClickListener(this);
         btnForgot.setOnClickListener(this);
         btnDangKy.setOnClickListener(this);
         firebaseUser = mAuth.getCurrentUser();
-         checkEmail();
+        checkEmail();
         initFaceBook();
         printKeyHash(this);
     }
@@ -112,16 +112,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             loginButton.setReadPermissions(Arrays.asList("email"));
         }
         else{
-
-                textInputEmail.getEditText().setText(firebaseUser.getEmail()+"");
+            textInputEmail.getEditText().setText(firebaseUser.getEmail());
+            if(mAuth.getCurrentUser().isEmailVerified()){
                 startActivity(new Intent(LoginActivity.this, MainActivity_Chinh.class));
-
-
+            }else{
+                Toast.makeText(LoginActivity.this, "BẠN CHƯA XÁC THỰC EMAIL, VÀO TÀI KHOẢN EMAIL ĐỂ XÁC THỰC LẠI"
+                        , Toast.LENGTH_LONG).show();
+                progressDialog.dismiss();
+            }
         }
     }
-
-    /**
-     *cau hinh GG trong app */
 
     public void ConfigureGGsignin(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -130,7 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
         mGoogle = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
-        Log.d("xacnhan","ok ne`!");
     }
     public void buttonClickFB(View v){
         callbackManager = CallbackManager.Factory.create();
@@ -167,11 +166,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
     }
-//
+    //
 //    private void updateUI(FirebaseUser firebaseUser) {
 //
 //    }
-    /*public static void shareLinkFB(String title, String linkShare, String imgThumnal) {
+    public static void shareLinkFB(String title, String linkShare, String imgThumnal) {
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentTitle(title)
                 .setImageUrl(Uri.parse(imgThumnal))
@@ -190,7 +189,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SharePhotoContent content = new SharePhotoContent.Builder()
                 .addPhoto(photo).build();
         ShareDialog.show(mainActivity, content);
-    }*/
+    }
     public URL extractFacebookIcon(String id) {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -233,17 +232,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 parameters.putString(getString(R.string.fields), getString(R.string.fields_name));
                 request.setParameters(parameters);
                 request.executeAsync();
-
             }
-
             @Override
             public void onCancel() {
-
             }
-
             @Override
             public void onError(FacebookException error) {
-
             }
         };
     }
@@ -251,7 +245,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
     }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -262,13 +255,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-
             }
         }
         else{
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
-
     }
     public static String printKeyHash(Activity context) {
         PackageInfo packageInfo;
@@ -276,18 +267,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             //getting application package name, as defined in manifest
             String packageName = context.getApplicationContext().getPackageName();
-
             //Retriving package info
             packageInfo = context.getPackageManager().getPackageInfo(packageName,
                     PackageManager.GET_SIGNATURES);
-
             Log.e("Package Name=", context.getApplicationContext().getPackageName());
-
             for (android.content.pm.Signature signature : packageInfo.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 key = new String(Base64.encode(md.digest(), 0));
-
                 // String key = new String(Base64.encodeBytes(md.digest()));
                 Log.e("Key Hash=", key);
             }
@@ -298,10 +285,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }
-
         return key;
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -320,9 +305,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
 
     }
-
-    /**
-     * get ID tu layout*/
     public void Anhxa(){
         btnDangKy=findViewById(R.id.btnDangKilogin);
         btnDangNhapbutton = findViewById(R.id.btnDangnhap);
@@ -332,8 +314,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textInputPassword=findViewById(R.id.textInput_Password);
         loginButton=findViewById(R.id.btnLoginFb);
     }
-    /**
-     * login ban he thong cua app*/
     private void DangNhapLogin(){
         String email = textInputEmail.getEditText().getText().toString().trim();
         String password = textInputPassword.getEditText().getText().toString().trim();
@@ -350,30 +330,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        if(mAuth.getCurrentUser().isEmailVerified()){
-                            startActivity(new Intent(LoginActivity.this, MainActivity_Chinh.class));
-                        }else{
-                            Toast.makeText(LoginActivity.this, "BẠN CHƯA XÁC THỰC EMAIL, VÀO TÀI KHOẢN EMAIL ĐỂ XÁC THỰC LẠI"
-                                    , Toast.LENGTH_LONG).show();
-                            progressDialog.dismiss();
-                        }
+                if(task.isSuccessful()){
+                    if(mAuth.getCurrentUser().isEmailVerified()){
+                        startActivity(new Intent(LoginActivity.this, MainActivity_Chinh.class));
                     }else{
-                        Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu bạn nhập không đúng, nhập lại"
+                        Toast.makeText(LoginActivity.this, "BẠN CHƯA XÁC THỰC EMAIL, VÀO TÀI KHOẢN EMAIL ĐỂ XÁC THỰC LẠI"
                                 , Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
+                }else{
+                    Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu bạn nhập không đúng, nhập lại"
+                            , Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
                 }
-            });
+            }
+        });
     }
-
-    /**
-     * login GG va chuyen sang homepage*/
     private void signInGooGle(){
-        Log.d("chuanbi","sắp chuyển");
         Intent intent = mGoogle.getSignInIntent();
         startActivityForResult(intent, 1);
-        Log.d("chuyển","ok lần e ne`~~");
     }
     @Override
     public void onClick(View v) {
@@ -382,8 +357,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = textInputEmail.getEditText().getText().toString().trim();
         String password = textInputPassword.getEditText().getText().toString().trim();
         if(v==btnDangNhapbutton){
-            if(validate.validateEmail(email,textInputEmail) && validate.validatePassword(password, textInputPassword)
-                    ){
+            if((validate.validateEmail(email,textInputEmail) && validate.validatePassword(password, textInputPassword))){
+                DangNhapLogin();
+                return;
+            }
+            if(validate.validatePassword(password,textInputPassword)){
                 DangNhapLogin();
                 return;
             }
@@ -397,18 +375,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //            Toast.makeText(this, input, Toast.LENGTH_SHORT).show();
         }
         else if(v==btnGoogleButton){
-            Log.d("nhan","vào");
             signInGooGle();
-
         }
         else if(v==btnDangKy){
-             startActivity(new Intent(LoginActivity.this,MainActivity.class));
-
+            startActivity(new Intent(LoginActivity.this,MainActivity.class));
         }
         else if(v==btnForgot){
             startActivity(new Intent(LoginActivity.this,forgot_password.class));
         }
-
-
     }
 }

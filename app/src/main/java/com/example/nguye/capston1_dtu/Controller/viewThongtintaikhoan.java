@@ -47,6 +47,8 @@ public class viewThongtintaikhoan extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);*/
         txtFullname =findViewById(R.id.editTextFullName1);
         txtFullname.setText(firebaseUser.getDisplayName()+"");
+        txtSDT.setText(firebaseUser.getPhoneNumber()+"");
+
 
 
        /* userEmail = header.findViewById(R.id.textViewEmail);

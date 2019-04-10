@@ -24,7 +24,9 @@
         <activity android:name=".Controller.profileHome" />
         <activity android:name=".Controller.profile" />
         <activity android:name=".Controller.MainActivity" />
-        <activity android:name=".Controller.MainActivity_Chinh" >
+        <activity android:name=".Controller.MainActivity_Chinh" />
+
+        <activity android:name=".Controller.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,17 +50,8 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <provider android:authorities="com.facebook.app.FacebookContentProvider865807543788879"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true"/>
-
-
-        <activity
-            android:name=".Controller.LoginActivity"
-            android:label="@string/app_name">
-
-        </activity>
     </application>
-
 </manifest>

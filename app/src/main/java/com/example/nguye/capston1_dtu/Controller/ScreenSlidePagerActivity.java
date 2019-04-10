@@ -238,7 +238,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements IsFire
         /** load de 2*/
         else if (name.equals("Toan de thi 2")) {
             if (isOnline()) {
-                myRef = mFirebaseDatabase.getReference("Mon Hoc").child("Toan").child("test").child("đề số 2");
+                myRef = mFirebaseDatabase.getReference("Mon Hoc").child("Toan").child("test").child("đề số 2");
                 final Question[] question = {null};
                 Log.d("dexem", "vao dc roi");
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
